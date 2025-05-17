@@ -4,6 +4,8 @@ import com.example.redisdemo.model.UserData;
 import com.example.redisdemo.service.RedisService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,10 @@ public class RedisController {
 
     @GetMapping("/get/{id}")
     @Operation(summary = "Get data from Redis by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful retrieval"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     public ResponseEntity<UserData> getById(@PathVariable String id) {
         UserData user = redisService.getById(id);
         return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
